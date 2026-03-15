@@ -6,7 +6,8 @@ matplotlib==3.9.2
 seaborn==0.13.2
 pyodbc==5.2.0
 python-dotenv==1.0.1
-streamlit==1.40.1
+streamlit==1.55.0
+pillow==12.1.1
 jupyter==1.1.1
 nbstripout==0.7.1
 thefuzz==0.22.1
