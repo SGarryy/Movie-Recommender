@@ -60,6 +60,11 @@ def load_tags():
 def insert_movies(df):
     conn = get_connection()
     cursor = conn.cursor()
+    df = df.copy()
+    df["movie_id"] = df["movie_id"].astype(int)
+    df["year"] = df["year"].apply(lambda x: int(x) if pd.notna(x) else None)
+    df["title"] = df["title"].astype(str)
+    df["genres"] = df["genres"].astype(str)
     rows = list(df[["movie_id", "title", "year", "genres"]].itertuples(index=False, name=None))
     batch_size = 1000
     for i in range(0, len(rows), batch_size):
@@ -92,6 +97,11 @@ def insert_users(df):
 def insert_ratings(df):
     conn = get_connection()
     cursor = conn.cursor()
+    df = df.copy()
+    df["user_id"] = df["user_id"].astype(int)
+    df["movie_id"] = df["movie_id"].astype(int)
+    df["rating"] = df["rating"].astype(float)
+    df["timestamp"] = df["timestamp"].astype(int)
     rows = list(df.itertuples(index=False, name=None))
     batch_size = 1000
     for i in range(0, len(rows), batch_size):
@@ -108,6 +118,11 @@ def insert_ratings(df):
 def insert_tags(df):
     conn = get_connection()
     cursor = conn.cursor()
+    df = df.copy()
+    df["user_id"] = df["user_id"].astype(int)
+    df["movie_id"] = df["movie_id"].astype(int)
+    df["tag"] = df["tag"].astype(str)
+    df["timestamp"] = df["timestamp"].astype(int)
     rows = list(df.itertuples(index=False, name=None))
     batch_size = 1000
     for i in range(0, len(rows), batch_size):
@@ -125,10 +140,6 @@ if __name__ == "__main__":
     print("Loading movies...")
     movies = load_movies()
     insert_movies(movies)
-
-    print("Loading users...")
-    users = load_users()
-    insert_users(users)
 
     print("Loading ratings...")
     ratings = load_ratings()
