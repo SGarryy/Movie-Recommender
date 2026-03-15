@@ -1,6 +1,6 @@
 # 🎬 Movie Recommendation System
 
-A portfolio-grade machine learning project built with Python, Scikit-learn, and Microsoft SQL Server — 
+A machine learning project built with Python, Scikit-learn, and Microsoft SQL Server — 
 using the MovieLens 10M dataset to deliver personalized movie recommendations.
 
 ---
