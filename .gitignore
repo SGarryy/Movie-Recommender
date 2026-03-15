@@ -1,0 +1,52 @@
+.env
+*.env
+
+# Data
+data/raw/
+data/processed/
+*.dat
+*.zip
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Models
+*.pkl
+*.joblib
+*.h5
+*.npz
+*.npy
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Tests
+.pytest_cache/
+htmlcov/
+.coverage
