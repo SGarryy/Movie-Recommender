@@ -1,6 +1,7 @@
 import os
-import pyodbc
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+import urllib
 
 load_dotenv()
 
@@ -10,7 +11,7 @@ def get_connection():
     user = os.getenv("DB_USER")
     password = os.getenv("DB_PASSWORD")
 
-    connection_string = (
+    params = urllib.parse.quote_plus(
         f"DRIVER={{ODBC Driver 17 for SQL Server}};"
         f"SERVER={server};"
         f"DATABASE={database};"
@@ -19,8 +20,5 @@ def get_connection():
         f"TrustServerCertificate=yes;"
     )
 
-    try:
-        conn = pyodbc.connect(connection_string)
-        return conn
-    except pyodbc.Error as e:
-        raise ConnectionError(f"Database connection failed: {e}")
+    engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
+    return engine

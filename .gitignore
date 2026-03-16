@@ -9,7 +9,6 @@ data/processed/
 
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb
 
 # Python
 __pycache__/
