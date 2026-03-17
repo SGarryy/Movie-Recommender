@@ -1,106 +1,132 @@
-# 🎬 Movie Recommendation System
+# Movie Recommendation System
 
-A machine learning system built with Python, Scikit-learn, and Microsoft SQL Server using the MovieLens 10M dataset.
+A movie recommendation project built with Python, scikit-learn, Streamlit, and Microsoft SQL Server using the MovieLens 10M dataset.
 
 ## Recommendation Techniques
 
 | Technique | Description |
-|---|---|
-| Content-Based Filtering | TF-IDF Vectorization + Cosine Similarity on movie metadata |
-| Collaborative Filtering | SVD (Truncated) on user-item rating matrix |
-| Hybrid Model | Weighted ensemble with cold-start fallback |
+| --- | --- |
+| Content-Based Filtering | TF-IDF vectorization and cosine similarity on movie metadata |
+| Collaborative Filtering | Truncated SVD on the user-item rating matrix |
+| Hybrid Model | Combines content and collaborative scores with safe fallbacks |
 
 ## Project Structure
-```
+
+```text
 movie-recommender/
-├── data/
-│   ├── raw/               
-│   └── processed/         
-├── notebooks/             
-│   └── 01_EDA.ipynb       
-├── src/
-│   ├── db/                
-│   │   ├── connection.py  
-│   │   ├── queries.py     
-│   │   ├── load_data.py   
-│   │   └── schema.sql     
-│   ├── models/            
-│   │   ├── content_based.py
-│   │   ├── collaborative.py
-│   │   └── hybrid.py      
-│   ├── preprocessing/     
-│   │   ├── cleaner.py     
-│   │   └── feature_engineering.py
-│   └── recommender.py     
-├── app/
-│   └── app.py             
-├── tests/
-│   └── test_models.py     
-├── .env.example           
-└── requirements.txt       
+|-- app/
+|   `-- app.py
+|-- data/
+|   |-- processed/
+|   `-- raw/
+|-- notebooks/
+|   `-- 01_EDA.ipynb
+|-- src/
+|   |-- db/
+|   |   |-- connection.py
+|   |   |-- load_data.py
+|   |   |-- queries.py
+|   |   `-- schema.sql
+|   |-- models/
+|   |   |-- collaborative.py
+|   |   |-- content_based.py
+|   |   `-- hybrid.py
+|   |-- preprocessing/
+|   |   |-- cleaner.py
+|   |   `-- feature_engineering.py
+|   `-- recommender.py
+|-- tests/
+|   `-- test_models.py
+|-- .env.example
+|-- pytest.ini
+`-- requirements.txt
 ```
 
 ## Tech Stack
 
-- **Language:** Python 3.13
-- **Database:** Microsoft SQL Server
-- **Libraries:** Pandas, NumPy, Scikit-learn, SciPy, Matplotlib, Seaborn, Streamlit
-- **Dataset:** MovieLens 10M — 10M ratings, 10,681 movies, 71,567 users
+- Python 3.13
+- Microsoft SQL Server
+- Pandas, NumPy, SciPy, scikit-learn
+- Streamlit
+- MovieLens 10M
 
 ## Setup
 
 ### 1. Clone the repo
-```bash
+
+```powershell
 git clone https://github.com/SGarryy/Movie-Recommender.git
 cd Movie-Recommender
 ```
 
-### 2. Create virtual environment
-```bash
-python -m venv venv
-venv\Scripts\activate
+### 2. Create a virtual environment
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
 ### 3. Install dependencies
-```bash
-pip install -r requirements.txt --only-binary=:all:
+
+```powershell
+python -m pip install -r requirements.txt --only-binary=:all:
 ```
 
 ### 4. Configure environment variables
-```bash
-cp .env.example .env
+
+```powershell
+Copy-Item .env.example .env
 ```
+
+Available database settings:
+
+- `DB_SERVER`
+- `DB_NAME`
+- `DB_DRIVER`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_ENCRYPT`
+- `DB_TRUST_SERVER_CERTIFICATE`
 
 ### 5. Set up SQL Server
-- Create database and user using `src/db/schema.sql`
-- Load data: `python -m src.db.load_data`
 
-### 6. Run the app
-```bash
-$env:PYTHONPATH = "path/to/movie-recommender"
-streamlit run app/app.py
+- Run `src/db/schema.sql`
+- Load data with `python -m src.db.load_data`
+- `users.dat` is not included in MovieLens 10M, so user demographics are optional in this project
+
+### 6. Build processed artifacts (optional but recommended)
+
+```powershell
+.\.venv\Scripts\python.exe -m src.preprocessing.build_processed
 ```
 
-## Dataset
+This populates `data/processed` with cleaned datasets, a cached TF-IDF matrix, and trained collaborative-filtering artifacts. The app will use them automatically when present and fall back to the database otherwise.
 
-MovieLens 10M from [GroupLens](https://grouplens.org/datasets/movielens/10m/) — 10 million ratings across 10,681 movies.
+### 7. Run the app
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run app/app.py
+```
 
 ## Tests
-```bash
-pytest tests/test_models.py -v
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -v
 ```
 
-10 tests covering data loading, cleaning, feature engineering, and recommendation models.
+The automated suite uses deterministic unit tests and does not require a live SQL Server instance.
 
-## Security
+## Security Notes
 
-- Credentials stored in `.env` — never committed
-- SQL Server bound to localhost only
-- Parameterized queries throughout
-- Limited DB user with SELECT/INSERT only
+- `.env` is ignored by git
+- SQLAlchemy hides bound parameters in raised SQL errors
+- Database queries are parameterized
+- Streamlit renders dataset text without injecting raw HTML into the page
+- TLS settings are explicit and configurable through `.env`
 
 ## Author
 
-**Gaurav Singh**
-[LinkedIn](https://linkedin.com/in/gauravsingh-ai) 
-[GitHub](https://github.com/SGarryy)
+Gaurav Singh
+
+- LinkedIn: https://linkedin.com/in/gauravsingh-ai
+- GitHub: https://github.com/SGarryy
