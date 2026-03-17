@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import streamlit as st
 import pandas as pd
@@ -29,7 +29,6 @@ tabs = st.tabs(["🔍 Search & Recommend", "⭐ Top Rated", "👤 For You"])
 with tabs[0]:
     st.subheader("Find Similar Movies")
     query = st.text_input("Search for a movie")
-
     if query:
         results = search_movie(query)
         if results.empty:
@@ -48,11 +47,12 @@ with tabs[0]:
                 else:
                     st.subheader("Recommended Movies")
                     for _, row in recs.iterrows():
+                        score_display = f"Score: {round(row['score'], 3)}" if 'score' in recs.columns else ""
                         st.markdown(f"""
                         <div class="movie-card">
                             <h3>{row['title']} ({int(row['year']) if row['year'] else 'N/A'})</h3>
                             <p>Genres: {row['genres']}</p>
-                            <p>Score: {round(row['score'], 3)}</p>
+                            <p>{score_display}</p>
                         </div>
                         """, unsafe_allow_html=True)
 
