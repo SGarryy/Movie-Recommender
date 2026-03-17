@@ -14,3 +14,4 @@ thefuzz==0.22.1
 python-Levenshtein==0.26.1
 pip-audit==2.7.3
 sqlalchemy==2.0.36
+pytest==8.3.3
