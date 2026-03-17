@@ -1,120 +1,106 @@
 # 🎬 Movie Recommendation System
 
-A machine learning project built with Python, Scikit-learn, and Microsoft SQL Server — 
-using the MovieLens 10M dataset to deliver personalized movie recommendations.
+A machine learning system built with Python, Scikit-learn, and Microsoft SQL Server using the MovieLens 10M dataset.
 
----
-
-## 🧠 Recommendation Techniques
+## Recommendation Techniques
 
 | Technique | Description |
 |---|---|
 | Content-Based Filtering | TF-IDF Vectorization + Cosine Similarity on movie metadata |
-| Collaborative Filtering | SVD (Truncated) + KNN on user-item rating matrix |
-| Hybrid Model | Weighted ensemble of both approaches with cold-start fallback |
+| Collaborative Filtering | SVD (Truncated) on user-item rating matrix |
+| Hybrid Model | Weighted ensemble with cold-start fallback |
 
----
-
-## 🗂️ Project Structure
+## Project Structure
 ```
 movie-recommender/
 ├── data/
-│   ├── raw/               ← MovieLens 10M + TMDB (gitignored)
-│   └── processed/         ← Cleaned data (gitignored)
-├── notebooks/             ← EDA + experimentation
+│   ├── raw/               
+│   └── processed/         
+├── notebooks/             
+│   └── 01_EDA.ipynb       
 ├── src/
-│   ├── db/                ← SQL Server connection + queries
-│   ├── models/            ← ML models
-│   ├── preprocessing/     ← Data cleaning + feature engineering
-│   └── recommender.py     ← Main recommendation interface
+│   ├── db/                
+│   │   ├── connection.py  
+│   │   ├── queries.py     
+│   │   ├── load_data.py   
+│   │   └── schema.sql     
+│   ├── models/            
+│   │   ├── content_based.py
+│   │   ├── collaborative.py
+│   │   └── hybrid.py      
+│   ├── preprocessing/     
+│   │   ├── cleaner.py     
+│   │   └── feature_engineering.py
+│   └── recommender.py     
 ├── app/
-│   └── app.py             ← Streamlit frontend
-├── tests/                 ← Unit tests
-├── .env.example           ← Environment variable template
-└── requirements.txt       ← Pinned dependencies
+│   └── app.py             
+├── tests/
+│   └── test_models.py     
+├── .env.example           
+└── requirements.txt       
 ```
 
----
+## Tech Stack
 
-## ⚙️ Tech Stack
-
-- **Language:** Python 3.10+
+- **Language:** Python 3.13
 - **Database:** Microsoft SQL Server
-- **Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Streamlit
-- **Dataset:** [MovieLens 10M](https://grouplens.org/datasets/movielens/10m/) + 
-[TMDB Metadata](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)
+- **Libraries:** Pandas, NumPy, Scikit-learn, SciPy, Matplotlib, Seaborn, Streamlit
+- **Dataset:** MovieLens 10M — 10M ratings, 10,681 movies, 71,567 users
 
----
-
-## 🚀 Setup Instructions
+## Setup
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/yourusername/movie-recommender.git
-cd movie-recommender
+git clone https://github.com/SGarryy/Movie-Recommender.git
+cd Movie-Recommender
 ```
 
 ### 2. Create virtual environment
 ```bash
 python -m venv venv
-venv\Scripts\activate      # Windows
-source venv/bin/activate   # Mac/Linux
+venv\Scripts\activate
 ```
 
 ### 3. Install dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt --only-binary=:all:
 ```
 
 ### 4. Configure environment variables
 ```bash
 cp .env.example .env
-# Fill in your SQL Server credentials in .env
 ```
 
-### 5. Set up database
-```bash
-# Run schema in SQL Server Management Studio
-# Then load data:
-python src/db/load_data.py
-```
+### 5. Set up SQL Server
+- Create database and user using `src/db/schema.sql`
+- Load data: `python -m src.db.load_data`
 
 ### 6. Run the app
 ```bash
+$env:PYTHONPATH = "path/to/movie-recommender"
 streamlit run app/app.py
 ```
 
----
+## Dataset
 
-## 📊 Dataset
+MovieLens 10M from [GroupLens](https://grouplens.org/datasets/movielens/10m/) — 10 million ratings across 10,681 movies.
 
-- **MovieLens 10M** — 10 million ratings, 100K tags, 10,681 movies, 71,567 users
-- **TMDB Metadata** — Movie overviews, genres, cast for enriched content features
+## Tests
+```bash
+pytest tests/test_models.py -v
+```
 
----
+10 tests covering data loading, cleaning, feature engineering, and recommendation models.
 
-## 🔐 Security
+## Security
 
-- All credentials stored in `.env` (never committed)
+- Credentials stored in `.env` — never committed
 - SQL Server bound to localhost only
-- Parameterized queries throughout — no SQL injection risk
+- Parameterized queries throughout
 - Limited DB user with SELECT/INSERT only
 
----
+## Author
 
-## 📈 Model Evaluation
-
-| Model | Metric | Score |
-|---|---|---|
-| Content-Based | Precision@10 | TBD |
-| Collaborative (SVD) | RMSE | TBD |
-| Hybrid | Precision@10 | TBD |
-
-*Scores updated after training*
-
----
-
-## 👤 Author
-
-**Gaurav Singh**  
-[LinkedIn](https://linkedin.com/in/gauravsingh-ai) • [GitHub](https://github.com/SGarryy)
+**Gaurav Singh**
+[LinkedIn](https://linkedin.com/in/gauravsingh-ai) 
+[GitHub](https://github.com/SGarryy)
